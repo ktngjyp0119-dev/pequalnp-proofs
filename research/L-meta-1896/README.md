@@ -8,6 +8,12 @@ The explicit 21-row family in GenericTestSample.lean covers all 273 distinct pai
 
 The unrestricted minimum lies between 18 and 21. There are 78 point pairs and 78 line pairs, and each eligible row covers only nine same-side pairs. Seventeen rows therefore fall short. If the selected family is invariant under simultaneous multiplication of indices by three and under the duality exchanging point p with line −p, the exact minimum is 22. The Python program checks a 22-row witness and every one of the 316,632 smaller unions of whole orbits. The 21-row family does not have to respect those symmetries.
 
+### An 18-row solution would have to break every plane symmetry
+
+The incidence graph is connected and bipartite, so an automorphism preserves the point and line parts or interchanges them. A part-preserving automorphism is determined by an ordered quadrangle: starting with the four vertices, intersections of their joining lines generate all 13 points. The checker builds this generating sequence and verifies the image of every line for all 5,616 ordered quadrangles. Composing with point-line duality gives all 11,232 incidence-graph symmetries.
+
+Any nontrivial stabilizer of a family contains an element of prime order. There are six prime-order conjugacy classes, with orders 2, 2, 3, 3, 13 and 13. For each representative, the checker searches families made of whole orbits. It branches on an uncovered pair and tests the orbit choices that could cover it. At most nine same-side pairs and 21 total pairs can be added per remaining row. Exhausting all six searches rules out a symmetric 18-row family. A possible asymmetric 18-row family remains open.
+
 ## Why one layer of AND gates needs exactly 51 OR gates
 
 This result concerns circuits in which no live input-to-output path passes through two AND gates. It allows arbitrary OR sharing. The general lower bound in L-meta-1896 allows nested AND gates.
@@ -23,6 +29,7 @@ This result concerns circuits in which no live input-to-output path passes throu
 * GenericTestSample.lean formally checks that the 21 point sets are distinct, that all rows satisfy the generic negative conditions, and that every required pair is covered.
 * StarOrBudget.lean proves uniqueness of the center, rectangular soundness from mixed-pair coverage, and the gate-count inequalities given the finite operand and root sets. The pruning and tagging that produce these sets from an arbitrary single-AND-layer circuit are the written argument above.
 * StarWitness.lean uses the project's circuit type. It proves legality, counts, and equality to incidence on all 26-input assignments.
+* eighteen_symmetry.py verifies the obstruction for all nonidentity symmetries using integer bit sets. Run it alongside generic_rows.py.
 * generic_rows.py independently enumerates the generic inputs and checks the stated covers and symmetry-restricted optimum with exact integer arithmetic. Run with Python 3 and assertions enabled.
 
 The Lean files were tested with project revision 1738dd7e4d5a6a52ceca99852b852c25d6236de4. From its lean directory, after building PEqualNP.Defs and Mathlib.Tactic, run lake env lean followed by the path to each file.
